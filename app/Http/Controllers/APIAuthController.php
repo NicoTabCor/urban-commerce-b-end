@@ -159,10 +159,11 @@ class APIAuthController extends Controller {
             'last_name' => $last_name,
             'google_id' => $google_id,
             'email' => $email,
-            'email_verified_at' => date('Y-m-d H:i:s')
           ]);
 
           $token = $user->createToken('api');
+
+          $user->markEmailAsVerified();
 
           return response()->json(['token' => $token->plainTextToken]);
         }

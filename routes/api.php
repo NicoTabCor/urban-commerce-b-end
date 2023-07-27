@@ -18,7 +18,7 @@ use App\Http\Controllers\APIAdminCategoriasController;
 |
 */
 // --- PRIVATE AREA --- //
-Route::middleware(['web', 'auth.session:sanctum', 'verified'])->group(function () {
+Route::middleware(['web', 'auth.admin:sanctum', 'verified'])->group(function () {
   Route::post('/admin', [APIAdminController::class, 'index']);
 
   // --- PRODUCTS --- //

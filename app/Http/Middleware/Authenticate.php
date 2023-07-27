@@ -18,11 +18,22 @@ class Authenticate extends Middleware {
 
   public function handle($request, Closure $next, ...$guards) {
 
+      if($request->header('Authorization')) {
+        try {
+          $this->authenticate($request, $guards);
+
+          return $next($request);
+        } catch (\Throwable $th) {
+          return response()->json(['error' => $th->getMessage()]);
+        }
+      }
+
     try {
       $autenticado = Auth::check();
       $user = Auth::user();
 
-      if ($autenticado || !$user || $user->is_admin === 0) {
+      if (!$autenticado || !$user || $user->is_admin === 0) {
+
         throw new AuthenticationException('Acceso Denegado');
       }
     } catch (\Throwable $th) {
